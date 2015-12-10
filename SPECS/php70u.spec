@@ -1,3 +1,5 @@
+# IUS spec file for php70u, forked from
+#
 # Fedora spec file for php
 #
 # License: MIT
@@ -5,10 +7,13 @@
 #
 # Please preserve changelog entries
 #
+%global base_ver 7.0
+%global ius_suffix 70u
+
 # API/ABI check
-%global apiver      20131106
-%global zendver     20131226
-%global pdover      20080721
+%global apiver      20151012
+%global zendver     20151012
+%global pdover      20150127
 # Extension version
 %global opcachever  7.0.6-dev
 
@@ -19,7 +24,7 @@
 %global _hardened_build 1
 
 # version used for php embedded library soname
-%global embed_version 5.6
+%global embed_version 7.0
 
 %global mysql_sock %(mysql_config --socket 2>/dev/null || echo /var/lib/mysql/mysql.sock)
 
@@ -64,12 +69,12 @@
 %global db_devel  libdb-devel
 %endif
 
-%global rcver  RC1
-%global rpmrel 1
+#global rcver  RC1
+%global rpmrel 1.ius
 
 Summary: PHP scripting language for creating dynamic web sites
-Name: php
-Version: 5.6.17
+Name: php%{?ius_suffix}
+Version: 7.0.0
 %if 0%{?rcver:1}
 Release: 0.%{rpmrel}.%{rcver}%{?dist}
 %else
@@ -1017,7 +1022,7 @@ build --enable-fpm \
 popd
 
 # Build for inclusion as embedded script language into applications,
-# /usr/lib[64]/libphp5.so
+# /usr/lib[64]/libphp7.so
 pushd build-embedded
 build --enable-embed \
       --without-mysql --disable-pdo \
@@ -1179,11 +1184,11 @@ install -m 755 -d $RPM_BUILD_ROOT%{_datadir}/php
 
 # install the DSO
 install -m 755 -d $RPM_BUILD_ROOT%{_httpd_moddir}
-install -m 755 build-apache/libs/libphp5.so $RPM_BUILD_ROOT%{_httpd_moddir}
+install -m 755 build-apache/libs/libphp7.so $RPM_BUILD_ROOT%{_httpd_moddir}/libphp7.so
 
 %if %{with_zts}
 # install the ZTS DSO
-install -m 755 build-zts/libs/libphp5.so $RPM_BUILD_ROOT%{_httpd_moddir}/libphp5-zts.so
+install -m 755 build-zts/libs/libphp7.so $RPM_BUILD_ROOT%{_httpd_moddir}/libphp7-zts.so
 %endif
 
 # Apache config fragment
@@ -1334,7 +1339,7 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/php/modules/*.a \
        $RPM_BUILD_ROOT%{_libdir}/php-zts/modules/*.a \
        $RPM_BUILD_ROOT%{_bindir}/{phptar} \
        $RPM_BUILD_ROOT%{_datadir}/pear \
-       $RPM_BUILD_ROOT%{_libdir}/libphp5.la
+       $RPM_BUILD_ROOT%{_libdir}/libphp7.la
 
 # Remove irrelevant docs
 rm -f README.{Zeus,QNX,CVS-RULES}
@@ -1353,9 +1358,9 @@ rm -f README.{Zeus,QNX,CVS-RULES}
 %postun embedded -p /sbin/ldconfig
 
 %files
-%{_httpd_moddir}/libphp5.so
+%{_httpd_moddir}/libphp7.so
 %if %{with_zts}
-%{_httpd_moddir}/libphp5-zts.so
+%{_httpd_moddir}/libphp7-zts.so
 %endif
 %attr(0770,root,apache) %dir %{_sharedstatedir}/php/session
 %attr(0770,root,apache) %dir %{_sharedstatedir}/php/wsdlcache
@@ -1443,8 +1448,8 @@ rm -f README.{Zeus,QNX,CVS-RULES}
 %{_rpmconfigdir}/macros.d/macros.php
 
 %files embedded
-%{_libdir}/libphp5.so
-%{_libdir}/libphp5-%{embed_version}.so
+%{_libdir}/libphp7.so
+%{_libdir}/libphp7-%{embed_version}.so
 
 %files pgsql -f files.pgsql
 %files odbc -f files.odbc
@@ -1484,6 +1489,10 @@ rm -f README.{Zeus,QNX,CVS-RULES}
 
 
 %changelog
+* Thu Dec 10 2015 Carl George <carl.george@rackspace.com> - 7.0.0-1.ius
+- Port from Fedora to IUS
+- Latest upstream
+
 * Thu Dec 10 2015 Remi Collet <remi@fedoraproject.org> 5.6.17-0.1.RC1
 - update to 5.6.17RC1
 
