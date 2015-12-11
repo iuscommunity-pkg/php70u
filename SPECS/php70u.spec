@@ -237,11 +237,6 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 Requires(postun): initscripts
 %endif
-# To ensure correct /var/lib/php/session ownership:
-Requires(pre): httpd-filesystem
-# For php.conf in /etc/httpd/conf.d
-# and version 2.4.10 for proxy support in SetHandler
-Requires: httpd-filesystem >= 2.4.10
 # php engine for Apache httpd webserver
 Provides: php(httpd)
 # for /etc/nginx ownership
@@ -1364,6 +1359,13 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/php/modules/*.a \
 # Remove irrelevant docs
 rm -f README.{Zeus,QNX,CVS-RULES}
 
+%pre fpm
+getent group php-fpm >/dev/null || \
+  groupadd -r php-fpm
+getent passwd php-fpm >/dev/null || \
+  useradd -r -g php-fpm -s /sbin/nologin \
+    -d %{_sharedstatedir}/php -c "php-fpm" php-fpm
+exit 0
 
 %post fpm
 %if %{with_systemd}
@@ -1449,8 +1451,6 @@ fi
 %files fpm
 %doc php-fpm.conf.default www.conf.default
 %license fpm_LICENSE
-%attr(0770,root,apache) %dir %{_sharedstatedir}/php/session
-%attr(0770,root,apache) %dir %{_sharedstatedir}/php/wsdlcache
 %config(noreplace) %{_httpd_confdir}/php.conf
 %config(noreplace) %{_sysconfdir}/php-fpm.conf
 %config(noreplace) %{_sysconfdir}/php-fpm.d/www.conf
@@ -1468,8 +1468,7 @@ fi
 %endif
 %{_sbindir}/php-fpm
 %dir %{_sysconfdir}/php-fpm.d
-# log owned by apache for log
-%attr(770,apache,root) %dir %{_localstatedir}/log/php-fpm
+%attr(770,php-fpm,root) %dir %{_localstatedir}/log/php-fpm
 %{_mandir}/man8/php-fpm.8*
 %dir %{_datadir}/fpm
 %{_datadir}/fpm/status.html
@@ -1538,6 +1537,7 @@ fi
 - Build against system pcre on EL7
 - Use correct macros directory with _macrosdir
 - Import rebased patches from Remirepo
+- Use dedicated user for php-fpm
 
 * Thu Dec 10 2015 Remi Collet <remi@fedoraproject.org> 5.6.17-0.1.RC1
 - update to 5.6.17RC1
