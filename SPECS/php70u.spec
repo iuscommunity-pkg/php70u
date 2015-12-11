@@ -41,8 +41,10 @@
 
 %if 0%{?rhel} >= 7
 %global with_systemd 1
+%global with_libpcre 1
 %else
 %global with_systemd 0
+%global with_libpcre 0
 %endif
 
 # Build ZTS extension or only NTS
@@ -151,7 +153,9 @@ BuildRequires: nginx-filesystem
 BuildRequires: libstdc++-devel, openssl-devel
 BuildRequires: sqlite-devel >= 3.6.0
 BuildRequires: zlib-devel, smtpdaemon, libedit-devel
+%if %{with_libpcre}
 BuildRequires: pcre-devel >= 6.6
+%endif
 BuildRequires: bzip2, perl, libtool >= 1.4.3, gcc-c++
 BuildRequires: libtool-ltdl-devel
 %if %{with_dtrace}
@@ -300,7 +304,9 @@ package and the php-cli package.
 Group: Development/Libraries
 Summary: Files needed for building PHP extensions
 Requires: php-cli%{?_isa} = %{version}-%{release}, autoconf, automake
+%if %{with_libpcre}
 Requires: pcre-devel%{?_isa}
+%endif
 %if %{with_zts}
 Provides: php-zts-devel = %{version}-%{release}
 Provides: php-zts-devel%{?_isa} = %{version}-%{release}
@@ -898,7 +904,9 @@ ln -sf ../configure
     --with-jpeg-dir=%{_prefix} \
     --with-openssl \
     --with-system-ciphers \
+%if %{with_libpcre}
     --with-pcre-regex=%{_prefix} \
+%endif
     --with-zlib \
     --with-layout=GNU \
     --with-kerberos \
@@ -1524,6 +1532,7 @@ fi
 - Port from Fedora to IUS
 - Latest upstream
 - Dual compatibility for sysvinit/systemd
+- Build against system pcre on EL7
 
 * Thu Dec 10 2015 Remi Collet <remi@fedoraproject.org> 5.6.17-0.1.RC1
 - update to 5.6.17RC1
