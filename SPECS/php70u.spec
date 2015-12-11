@@ -119,15 +119,15 @@ Source51: opcache-default.blacklist
 Patch5: php-5.6.3-includedir.patch
 Patch6: php-5.6.3-embed.patch
 Patch7: php-5.3.0-recode.patch
-Patch8: php-5.6.17-libdb.patch
+Patch8: php-7.0.0-libdb.patch
 
 # Fixes for extension modules
 # https://bugs.php.net/63171 no odbc call during timeout
-Patch21: php-5.4.7-odbctimer.patch
+Patch21: php-7.0.0-odbctimer.patch
 
 # Functional changes
-Patch40: php-5.4.0-dlopen.patch
-Patch42: php-5.6.13-systzdata-v12.patch
+Patch40: php-7.0.0-dlopen.patch
+Patch42: php-7.0.0-systzdata-v13.patch
 # See http://bugs.php.net/53436
 Patch43: php-5.4.0-phpize.patch
 # Use -lldap_r for OpenLDAP
@@ -1536,6 +1536,7 @@ fi
 - Dual compatibility for sysvinit/systemd
 - Build against system pcre on EL7
 - Use correct macros directory with _macrosdir
+- Import rebased patches from Remirepo
 
 * Thu Dec 10 2015 Remi Collet <remi@fedoraproject.org> 5.6.17-0.1.RC1
 - update to 5.6.17RC1
