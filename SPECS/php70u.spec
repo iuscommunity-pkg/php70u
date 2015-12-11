@@ -1228,6 +1228,7 @@ sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.
 sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.d/www.conf
 %endif
 mv $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.conf.default .
+mv $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.d/www.conf.default .
 %if %{with_systemd}
 install -m 755 -d $RPM_BUILD_ROOT/run/php-fpm
 # tmpfiles.d
@@ -1446,7 +1447,7 @@ fi
 %{_mandir}/man1/phpdbg.1*
 
 %files fpm
-%doc php-fpm.conf.default
+%doc php-fpm.conf.default www.conf.default
 %license fpm_LICENSE
 %attr(0770,root,apache) %dir %{_sharedstatedir}/php/session
 %attr(0770,root,apache) %dir %{_sharedstatedir}/php/wsdlcache
