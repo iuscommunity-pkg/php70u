@@ -145,7 +145,7 @@ Patch300: php-5.6.3-datetests.patch
 
 
 BuildRequires: bzip2-devel, curl-devel >= 7.9
-BuildRequires: httpd-devel >= 2.0.46-1, pam-devel
+BuildRequires: pam-devel
 # to ensure we are using httpd with filesystem feature (see #1081453)
 BuildRequires: httpd-filesystem
 # to ensure we are using nginx with filesystem feature (see #1142298)
@@ -162,20 +162,6 @@ BuildRequires: libtool-ltdl-devel
 BuildRequires: systemtap-sdt-devel
 %endif
 
-%if %{with_zts}
-Provides: php-zts = %{version}-%{release}
-Provides: php-zts%{?_isa} = %{version}-%{release}
-%endif
-
-Requires: httpd-mmn = %{_httpd_mmn}
-Provides: mod_php = %{version}-%{release}
-Requires: php-common%{?_isa} = %{version}-%{release}
-# For backwards-compatibility, require php-cli for the time being:
-Requires: php-cli%{?_isa} = %{version}-%{release}
-# To ensure correct /var/lib/php/session ownership:
-Requires(pre): httpd-filesystem
-# php engine for Apache httpd webserver
-Provides: php(httpd)
 
 %if 0%{?rhel} < 7
 # Don't provides extensions, which are not shared library, as .so
@@ -194,8 +180,26 @@ non-commercial database management systems, so writing a
 database-enabled webpage with PHP is fairly simple. The most common
 use of PHP coding is probably as a replacement for CGI scripts.
 
-The php package contains the module (often referred to as mod_php)
-which adds support for the PHP language to Apache HTTP Server.
+%package -n mod_php%{?ius_suffix}
+Group: Development/Languages
+Summary: PHP module for the Apache HTTP Server
+BuildRequires: httpd-devel
+Requires: httpd-mmn = %{_httpd_mmn}
+Requires: php-common%{?_isa} = %{version}-%{release}
+# for user experience
+Provides: php = %{version}-%{release}
+Provides: php%{?_isa} = %{version}-%{release}
+%if %{with_zts}
+Provides: php-zts = %{version}-%{release}
+Provides: php-zts%{?_isa} = %{version}-%{release}
+%endif
+
+# php engine for Apache httpd webserver
+Provides: php(httpd)
+
+%description -n mod_php%{?ius_suffix}
+The mod_php package contains the module which adds support for the PHP
+language to Apache HTTP Server.
 
 %package cli
 Group: Development/Languages
@@ -1414,7 +1418,7 @@ fi
 %post embedded -p /sbin/ldconfig
 %postun embedded -p /sbin/ldconfig
 
-%files
+%files -n mod_php%{?ius_suffix}
 %{_httpd_moddir}/libphp7.so
 %if %{with_zts}
 %{_httpd_moddir}/libphp7-zts.so
@@ -1561,6 +1565,7 @@ fi
 - Import rebased patches from Remirepo
 - Use dedicated user for php-fpm
 - Dual compatibility for httpd 2.2/2.4
+- Move httpd module to mod_php subpackage
 
 * Thu Dec 10 2015 Remi Collet <remi@fedoraproject.org> 5.6.17-0.1.RC1
 - update to 5.6.17RC1
