@@ -1418,6 +1418,8 @@ fi
 %post embedded -p /sbin/ldconfig
 %postun embedded -p /sbin/ldconfig
 
+%{!?_licensedir:%global license %%doc}
+
 %files -n mod_php%{?ius_suffix}
 %{_httpd_moddir}/libphp7.so
 %if %{with_zts}
