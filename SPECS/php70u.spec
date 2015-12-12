@@ -108,6 +108,7 @@ Source9: php.modconf
 Source10: php.ztsmodconf
 Source13: nginx-fpm.conf
 Source14: nginx-php.conf
+Source15: httpd-fpm.conf
 Source20: php-fpm.init
 # Configuration files for some extensions
 Source50: opcache.ini
@@ -146,10 +147,6 @@ Patch300: php-5.6.3-datetests.patch
 
 BuildRequires: bzip2-devel, curl-devel >= 7.9
 BuildRequires: pam-devel
-# to ensure we are using httpd with filesystem feature (see #1081453)
-BuildRequires: httpd-filesystem
-# to ensure we are using nginx with filesystem feature (see #1142298)
-BuildRequires: nginx-filesystem
 BuildRequires: libstdc++-devel, openssl-devel
 BuildRequires: sqlite-devel >= 3.6.0
 BuildRequires: zlib-devel, smtpdaemon, libedit-devel
@@ -248,13 +245,31 @@ Requires(postun): initscripts
 %endif
 # php engine for Apache httpd webserver
 Provides: php(httpd)
-# for /etc/nginx ownership
-Requires: nginx-filesystem
 
 %description fpm
 PHP-FPM (FastCGI Process Manager) is an alternative PHP FastCGI
 implementation with some additional features useful for sites of
 any size, especially busier sites.
+
+%package fpm-nginx
+Group: Development/Languages
+Summary: Nginx configuration for PHP-FPM
+BuildArch: noarch
+Requires: php-fpm = %{version}-%{release}
+Requires: nginx
+
+%description fpm-nginx
+Nginx configuration files for the PHP FastCGI Process Manager.
+
+%package fpm-httpd
+Group: Development/Languages
+Summary: Apache HTTP Server configuration for PHP-FPM
+BuildArch: noarch
+Requires: php-fpm = %{version}-%{release}
+Requires: httpd >= 2.4
+
+%description fpm-httpd
+Apache HTTP Server configuration file for the PHP FastCGI Process Manager.
 
 %package common
 Group: Development/Languages
@@ -1270,8 +1285,11 @@ sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_sysconfdir}/logrotat
 %endif
 # Nginx configuration
 install -D -m 644 %{SOURCE13} $RPM_BUILD_ROOT%{_sysconfdir}/nginx/conf.d/php-fpm.conf
+# Apache httpd configuration
+install -D -m 644 %{SOURCE15} $RPM_BUILD_ROOT%{_httpd_confdir}/php-fpm.conf
 %if ! %{with_systemd}
 sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_sysconfdir}/nginx/conf.d/php-fpm.conf
+sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_httpd_confdir}/php-fpm.conf
 %endif
 install -D -m 644 %{SOURCE14} $RPM_BUILD_ROOT%{_sysconfdir}/nginx/default.d/php.conf
 
@@ -1478,12 +1496,9 @@ fi
 %files fpm
 %doc php-fpm.conf.default www.conf.default
 %license fpm_LICENSE
-%config(noreplace) %{_httpd_confdir}/php.conf
 %config(noreplace) %{_sysconfdir}/php-fpm.conf
 %config(noreplace) %{_sysconfdir}/php-fpm.d/www.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/php-fpm
-%config(noreplace) %{_sysconfdir}/nginx/conf.d/php-fpm.conf
-%config(noreplace) %{_sysconfdir}/nginx/default.d/php.conf
 %if %{with_systemd}
 %dir /run/php-fpm
 %{_prefix}/lib/tmpfiles.d/php-fpm.conf
@@ -1499,6 +1514,13 @@ fi
 %{_mandir}/man8/php-fpm.8*
 %dir %{_datadir}/fpm
 %{_datadir}/fpm/status.html
+
+%files fpm-nginx
+%config(noreplace) %{_sysconfdir}/nginx/conf.d/php-fpm.conf
+%config(noreplace) %{_sysconfdir}/nginx/default.d/php.conf
+
+%files fpm-httpd
+%config(noreplace) %{_httpd_confdir}/php-fpm.conf
 
 %files devel
 %{_bindir}/php-config
@@ -1568,6 +1590,7 @@ fi
 - Use dedicated user for php-fpm
 - Dual compatibility for httpd 2.2/2.4
 - Move httpd module to mod_php subpackage
+- Move webserver configurations into subpackages
 
 * Thu Dec 10 2015 Remi Collet <remi@fedoraproject.org> 5.6.17-0.1.RC1
 - update to 5.6.17RC1
