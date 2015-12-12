@@ -170,6 +170,14 @@ Requires(pre): httpd-filesystem
 # php engine for Apache httpd webserver
 Provides: php(httpd)
 
+%if 0%{?rhel} < 7
+# Don't provides extensions, which are not shared library, as .so
+%{?filter_provides_in: %filter_provides_in %{_libdir}/php/modules/.*\.so$}
+%{?filter_provides_in: %filter_provides_in %{_libdir}/php-zts/modules/.*\.so$}
+%{?filter_provides_in: %filter_provides_in %{_httpd_moddir}/.*\.so$}
+%{?filter_setup}
+%endif
+
 
 %description
 PHP is an HTML-embedded scripting language. PHP attempts to make it
