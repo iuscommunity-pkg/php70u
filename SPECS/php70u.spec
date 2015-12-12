@@ -1015,14 +1015,14 @@ if test "x${vpdo}" != "x%{pdover}"; then
 fi
 
 # Check for some extension version
-ver=$(sed -n '/#define PHP_JSON_VERSION /{s/.* "//;s/".*$//;p}' ext/json/php_json.h)
+ver=$(sed -n '/#define PHP_JSON_VERSION /{s/.*\s"//;s/".*$//;p}' ext/json/php_json.h)
 if test "$ver" != "%{jsonver}"; then
    : Error: Upstream JSON version is now ${ver}, expecting %{jsonver}.
    : Update the jsonver macro and rebuild.
    exit 1
 fi
 
-ver=$(sed -n '/#define PHP_ZENDOPCACHE_VERSION /{s/.* "//;s/".*$//;p}' ext/opcache/ZendAccelerator.h)
+ver=$(sed -n '/#define PHP_ZENDOPCACHE_VERSION /{s/.*\s"//;s/".*$//;p}' ext/opcache/ZendAccelerator.h)
 if test "$ver" != "%{opcachever}"; then
    : Error: Upstream OPCACHE version is now ${ver}, expecting %{opcachever}.
    : Update the opcachever macro and rebuild.
