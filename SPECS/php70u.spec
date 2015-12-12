@@ -1109,7 +1109,6 @@ ln -sf ../configure
     --without-gdbm \
     --with-jpeg-dir=%{_prefix} \
     --with-openssl \
-    --with-system-ciphers \
 %if %{with_libpcre}
     --with-pcre-regex=%{_prefix} \
 %endif
