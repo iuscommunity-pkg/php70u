@@ -1795,6 +1795,7 @@ fi
 - Move webserver configurations into subpackages
 - Provide and conflict with stock names
 - Use separate session/cache directories for mod_php and fpm
+- Set fpm to use a TCP port by default
 
 * Thu Dec 10 2015 Remi Collet <remi@fedoraproject.org> 5.6.17-0.1.RC1
 - update to 5.6.17RC1
