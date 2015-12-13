@@ -1662,6 +1662,7 @@ fi
 %{_bindir}/php
 %if %{with_zts}
 %{_bindir}/zts-php
+%{_mandir}/man1/zts-php.1*
 %endif
 %{_bindir}/php-cgi
 %{_bindir}/phar.phar
@@ -1669,7 +1670,6 @@ fi
 # provides phpize here (not in -devel) for pecl command
 %{_bindir}/phpize
 %{_mandir}/man1/php.1*
-%{_mandir}/man1/zts-php.1*
 %{_mandir}/man1/php-cgi.1*
 %{_mandir}/man1/phar.1*
 %{_mandir}/man1/phar.phar.1*
@@ -1680,6 +1680,10 @@ fi
 %{_bindir}/phpdbg
 %doc sapi/phpdbg/{README.md,CREDITS}
 %{_mandir}/man1/phpdbg.1*
+%if %{with_zts}
+%{_bindir}/zts-phpdbg
+%{_mandir}/man1/zts-phpdbg.1*
+%endif
 
 %files fpm
 %doc php-fpm.conf.default www.conf.default
@@ -1767,7 +1771,9 @@ fi
 %files mysqlnd -f files.mysqlnd
 %files opcache -f files.opcache
 %config(noreplace) %{_sysconfdir}/php.d/opcache-default.blacklist
+%if %{with_zts}
 %config(noreplace) %{_sysconfdir}/php-zts.d/opcache-default.blacklist
+%endif
 %files json -f files.json
 
 
