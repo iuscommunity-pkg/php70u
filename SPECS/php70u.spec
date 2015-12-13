@@ -180,7 +180,11 @@ use of PHP coding is probably as a replacement for CGI scripts.
 %package -n mod_php%{?ius_suffix}
 Group: Development/Languages
 Summary: PHP module for the Apache HTTP Server
+%if 0%{?rhel} < 7
+BuildRequires: httpd-devel < 2.4
+%else
 BuildRequires: httpd-devel
+%endif
 Requires: httpd-mmn = %{_httpd_mmn}
 Requires: php-common%{?_isa} = %{version}-%{release}
 # for user experience
