@@ -83,7 +83,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.0
+Version: 7.0.1
 %if 0%{?rcver:1}
 Release: 0.%{rpmrel}.%{rcver}%{?dist}
 %else
@@ -188,8 +188,6 @@ BuildRequires: httpd-devel
 Requires: httpd-mmn = %{_httpd_mmn}
 Requires: php-common%{?_isa} = %{version}-%{release}
 # for user experience
-Provides: php = %{version}-%{release}
-Provides: php%{?_isa} = %{version}-%{release}
 Provides: %{name} = %{version}-%{release}
 Provides: %{name}%{?_isa} = %{version}-%{release}
 %if %{with_zts}
@@ -203,6 +201,9 @@ Provides: %{name}-zts%{?_isa} = %{version}-%{release}
 Provides: php(httpd)
 Provides: %{name}(httpd)
 
+Provides: php = %{version}-%{release}
+Provides: php%{?_isa} = %{version}-%{release}
+Conflicts: php < %{base_ver}
 Provides: mod_php = %{version}-%{release}
 Provides: mod_php%{?_isa} = %{version}-%{release}
 Conflicts: mod_php < %{base_ver}
@@ -1782,6 +1783,10 @@ fi
 
 
 %changelog
+* Fri Dec 18 2015 Carl George <carl.george@rackspace.com> - 7.0.1-1.ius
+- Latest upstream
+- Ensure mod_php70u conflicts with stock php (mod_php)
+
 * Thu Dec 10 2015 Carl George <carl.george@rackspace.com> - 7.0.0-1.ius
 - Port from Fedora to IUS
 - Latest upstream
