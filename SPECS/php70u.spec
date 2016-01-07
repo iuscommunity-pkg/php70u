@@ -83,7 +83,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.1
+Version: 7.0.2
 %if 0%{?rcver:1}
 Release: 0.%{rpmrel}.%{rcver}%{?dist}
 %else
@@ -1783,6 +1783,9 @@ fi
 
 
 %changelog
+* Thu Jan 07 2016 Carl George <carl.george@rackspace.com> - 7.0.2-1.ius
+- Latest upstream
+
 * Fri Dec 18 2015 Carl George <carl.george@rackspace.com> - 7.0.1-1.ius
 - Latest upstream
 - Ensure mod_php70u conflicts with stock php (mod_php)
