@@ -121,7 +121,7 @@ Source51: opcache-default.blacklist
 Patch5: php-5.6.3-includedir.patch
 Patch6: php-5.6.3-embed.patch
 Patch7: php-5.3.0-recode.patch
-Patch8: php-7.0.0-libdb.patch
+Patch8: php-7.0.2-libdb.patch
 
 # Fixes for extension modules
 # https://bugs.php.net/63171 no odbc call during timeout
@@ -1816,6 +1816,7 @@ fi
 * Thu Jan 07 2016 Carl George <carl.george@rackspace.com> - 7.0.2-1.ius
 - Latest upstream
 - Add zip extension
+- Refresh patch8
 
 * Fri Dec 18 2015 Carl George <carl.george@rackspace.com> - 7.0.1-1.ius
 - Latest upstream
