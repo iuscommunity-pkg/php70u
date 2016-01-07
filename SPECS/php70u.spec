@@ -72,6 +72,9 @@
 %global  with_libgd 1
 %endif
 
+%global with_zip     1
+%global with_libzip  0
+
 %if 0%{?fedora} < 18 && 0%{?rhel} < 7
 %global db_devel  db4-devel
 %else
@@ -155,6 +158,9 @@ BuildRequires: pcre-devel >= 6.6
 %endif
 BuildRequires: bzip2, perl, libtool >= 1.4.3, gcc-c++
 BuildRequires: libtool-ltdl-devel
+%if %{with_libzip}
+BuildRequires: libzip-devel >= 0.11
+%endif
 %if %{with_dtrace}
 BuildRequires: systemtap-sdt-devel
 %endif
@@ -342,6 +348,9 @@ Provides: php-sockets, php-sockets%{?_isa}
 Provides: php-spl, php-spl%{?_isa}
 Provides: php-standard = %{version}, php-standard%{?_isa} = %{version}
 Provides: php-tokenizer, php-tokenizer%{?_isa}
+%if %{with_zip}
+Provides: php-zip, php-zip%{?_isa}
+%endif
 Provides: php-zlib, php-zlib%{?_isa}
 Provides: %{name}-bz2, %{name}-bz2%{?_isa}
 Provides: %{name}-calendar, %{name}-calendar%{?_isa}
@@ -367,6 +376,9 @@ Provides: %{name}-sockets, %{name}-sockets%{?_isa}
 Provides: %{name}-spl, %{name}-spl%{?_isa}
 Provides: %{name}-standard = %{version}, %{name}-standard%{?_isa} = %{version}
 Provides: %{name}-tokenizer, %{name}-tokenizer%{?_isa}
+%if %{with_zip}
+Provides: %{name}-zip, %{name}-zip%{?_isa}
+%endif
 Provides: %{name}-zlib, %{name}-zlib%{?_isa}
 
 Provides: php-common = %{version}-%{release}
@@ -1191,6 +1203,12 @@ build --libdir=%{_libdir}/php \
       --with-pdo-dblib=shared,%{_prefix} \
       --with-sqlite3=shared,%{_prefix} \
       --enable-json=shared \
+%if %{with_zip}
+      --enable-zip=shared \
+%if %{with_libzip}
+      --with-libzip \
+%endif
+%endif
       --without-readline \
       --with-libedit \
       --with-pspell=shared \
@@ -1313,6 +1331,12 @@ build --includedir=%{_includedir}/php-zts \
       --with-pdo-dblib=shared,%{_prefix} \
       --with-sqlite3=shared,%{_prefix} \
       --enable-json=shared \
+%if %{with_zip}
+      --enable-zip=shared \
+%if %{with_libzip}
+      --with-libzip \
+%endif
+%endif
       --without-readline \
       --with-libedit \
       --with-pspell=shared \
@@ -1492,6 +1516,9 @@ for mod in pgsql odbc ldap snmp xmlrpc imap json \
     simplexml bz2 calendar ctype exif ftp gettext gmp iconv \
     sockets tokenizer opcache \
     pdo pdo_pgsql pdo_odbc pdo_sqlite \
+%if %{with_zip}
+    zip \
+%endif
     interbase pdo_firebird \
     sqlite3 \
     enchant phar fileinfo intl \
@@ -1562,6 +1589,9 @@ cat files.curl files.phar files.fileinfo \
     files.exif files.gettext files.iconv files.calendar \
     files.ftp files.bz2 files.ctype files.sockets \
     files.tokenizer > files.common
+%if %{with_zip}
+cat files.zip >> files.common
+%endif
 
 # The default Zend OPcache blacklist file
 install -m 644 %{SOURCE51} $RPM_BUILD_ROOT%{_sysconfdir}/php.d/opcache-default.blacklist
@@ -1785,6 +1815,7 @@ fi
 %changelog
 * Thu Jan 07 2016 Carl George <carl.george@rackspace.com> - 7.0.2-1.ius
 - Latest upstream
+- Add zip extension
 
 * Fri Dec 18 2015 Carl George <carl.george@rackspace.com> - 7.0.1-1.ius
 - Latest upstream
