@@ -186,11 +186,7 @@ use of PHP coding is probably as a replacement for CGI scripts.
 %package -n mod_php%{?ius_suffix}
 Group: Development/Languages
 Summary: PHP module for the Apache HTTP Server
-%if 0%{?rhel} < 7
-BuildRequires: httpd-devel < 2.4
-%else
-BuildRequires: httpd-devel
-%endif
+BuildRequires: httpd-devel < 2.4.10
 Requires: httpd-mmn = %{_httpd_mmn}
 Requires: php-common%{?_isa} = %{version}-%{release}
 # for user experience
@@ -1815,6 +1811,7 @@ fi
 %changelog
 * Thu Feb 04 2016 Carl George <carl.george@rackspace.com> - 7.0.3-1.ius
 - Latest upstream
+- Build require httpd-devel < 2.4.10 to get stock httpd-devel, not httpd24u
 
 * Thu Jan 07 2016 Carl George <carl.george@rackspace.com> - 7.0.2-1.ius
 - Latest upstream
