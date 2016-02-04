@@ -86,7 +86,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.2
+Version: 7.0.3
 %if 0%{?rcver:1}
 Release: 0.%{rpmrel}.%{rcver}%{?dist}
 %else
@@ -1813,6 +1813,9 @@ fi
 
 
 %changelog
+* Thu Feb 04 2016 Carl George <carl.george@rackspace.com> - 7.0.3-1.ius
+- Latest upstream
+
 * Thu Jan 07 2016 Carl George <carl.george@rackspace.com> - 7.0.2-1.ius
 - Latest upstream
 - Add zip extension
