@@ -81,12 +81,11 @@
 %global db_devel  db4-devel
 %endif
 
-%global rpmrel 1.ius
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
 Version: 7.0.3
-Release: %{rpmrel}%{?dist}
+Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
