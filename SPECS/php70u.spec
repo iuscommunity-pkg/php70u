@@ -84,7 +84,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.3
+Version: 7.0.4
 Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1800,6 +1800,9 @@ fi
 
 
 %changelog
+* Thu Mar 03 2016 Carl George <carl.george@rackspace.com> - 7.0.4-1.ius
+- Latest upstream
+
 * Thu Feb 04 2016 Carl George <carl.george@rackspace.com> - 7.0.3-1.ius
 - Latest upstream
 - Build require httpd-devel < 2.4.10 to get stock httpd-devel, not httpd24u
