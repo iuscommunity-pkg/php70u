@@ -84,7 +84,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.5
+Version: 7.0.6
 Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -940,7 +940,8 @@ httpd -V  | grep -q 'threaded:.*yes' && exit 1
 %patch7 -p1 -b .recode
 %patch8 -p1 -b .libdb
 
-%patch21 -p1 -b .odbctimer
+# patched upstream ini 7.0.6
+#%patch21 -p1 -b .odbctimer
 
 %patch40 -p1 -b .dlopen
 %patch42 -p1 -b .systzdata
@@ -1800,6 +1801,10 @@ fi
 
 
 %changelog
+* Fri Apr 29 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.6-1.ius
+- Latest upstream
+- disable Patch21 patched upstream
+
 * Thu Mar 31 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.5-1.ius
 - Latest upstream
 
