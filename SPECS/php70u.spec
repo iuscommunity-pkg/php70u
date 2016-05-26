@@ -84,7 +84,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.6
+Version: 7.0.7
 Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -116,6 +116,9 @@ Patch5: php-5.6.3-includedir.patch
 Patch6: php-5.6.3-embed.patch
 Patch7: php-5.3.0-recode.patch
 Patch8: php-7.0.2-libdb.patch
+# This patch is from Remi Collet
+# https://github.com/remicollet/remirepo/blob/87954ef9ca41c15043c7c892149f22c6a437d190/php/php70/php-7.0.7-curl.patch
+Patch9: php-7.0.7-curl.patch
 
 # Fixes for extension modules
 # https://bugs.php.net/63171 no odbc call during timeout
@@ -1729,7 +1732,7 @@ fi
 %endif
 %{_sbindir}/php-fpm
 %dir %{_sysconfdir}/php-fpm.d
-%attr(770,php-fpm,root) %dir %{_localstatedir}/log/php-fpm
+%attr(770,php-fpm,php-fpm) %dir %{_localstatedir}/log/php-fpm
 %{_mandir}/man8/php-fpm.8*
 %dir %{_datadir}/fpm
 %{_datadir}/fpm/status.html
@@ -1801,6 +1804,13 @@ fi
 
 
 %changelog
+* Thu May 26 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.7-1.ius
+- Latest upstream
+- update ownership for php-fpm logs as discussed:
+  https://github.com/iuscommunity-pkg/php70u/pull/5
+- add Patch9 from Remi Collet
+  https://github.com/remicollet/remirepo/blob/87954ef9ca41c15043c7c892149f22c6a437d190/php/php70/php-7.0.7-curl.patch
+
 * Fri Apr 29 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.6-1.ius
 - Latest upstream
 - disable Patch21 patched upstream
