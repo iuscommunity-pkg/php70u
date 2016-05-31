@@ -85,7 +85,7 @@
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
 Version: 7.0.7
-Release: 1.ius%{?dist}
+Release: 2.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -1804,6 +1804,9 @@ fi
 
 
 %changelog
+* Tue May 31 2016 Carl George <carl.george@rackspace.com> - 7.0.7-2.ius
+- Force daemonize in init script
+
 * Thu May 26 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.7-1.ius
 - Latest upstream
 - update ownership for php-fpm logs as discussed:
