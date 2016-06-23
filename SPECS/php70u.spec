@@ -15,7 +15,6 @@
 %global zendver     20151012
 %global pdover      20150127
 # Extension version
-%global opcachever  7.0.6-dev
 %global jsonver     1.4.0
 
 # Adds -z now to the linker flags
@@ -84,8 +83,8 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.7
-Release: 2.ius%{?dist}
+Version: 7.0.8
+Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -410,14 +409,14 @@ Summary:   The Zend OPcache
 Group:     Development/Languages
 License:   PHP
 Requires:  php-common%{?_isa} = %{version}-%{release}
-Provides:  php-pecl-zendopcache = %{opcachever}
-Provides:  php-pecl-zendopcache%{?_isa} = %{opcachever}
-Provides:  %{name}-pecl-zendopcache = %{opcachever}
-Provides:  %{name}-pecl-zendopcache%{?_isa} = %{opcachever}
-Provides:  php-pecl(opcache) = %{opcachever}
-Provides:  php-pecl(opcache)%{?_isa} = %{opcachever}
-Provides:  %{name}-pecl(opcache) = %{opcachever}
-Provides:  %{name}-pecl(opcache)%{?_isa} = %{opcachever}
+Provides:  php-pecl-zendopcache = %{version}-%{release}
+Provides:  php-pecl-zendopcache%{?_isa} = %{version}-%{release}
+Provides:  %{name}-pecl-zendopcache = %{version}-%{release}
+Provides:  %{name}-pecl-zendopcache%{?_isa} = %{version}-%{release}
+Provides:  php-pecl(opcache) = %{version}-%{release}
+Provides:  php-pecl(opcache)%{?_isa} = %{version}-%{release}
+Provides:  %{name}-pecl(opcache) = %{version}-%{release}
+Provides:  %{name}-pecl(opcache)%{?_isa} = %{version}-%{release}
 Provides: php-opcache = %{version}-%{release}
 Provides: php-opcache%{?_isa} = %{version}-%{release}
 Conflicts: php-opcache < %{base_ver}
@@ -1030,13 +1029,6 @@ ver=$(sed -n '/#define PHP_JSON_VERSION /{s/.*\s"//;s/".*$//;p}' ext/json/php_js
 if test "$ver" != "%{jsonver}"; then
    : Error: Upstream JSON version is now ${ver}, expecting %{jsonver}.
    : Update the jsonver macro and rebuild.
-   exit 1
-fi
-
-ver=$(sed -n '/#define PHP_ZENDOPCACHE_VERSION /{s/.*\s"//;s/".*$//;p}' ext/opcache/ZendAccelerator.h)
-if test "$ver" != "%{opcachever}"; then
-   : Error: Upstream OPCACHE version is now ${ver}, expecting %{opcachever}.
-   : Update the opcachever macro and rebuild.
    exit 1
 fi
 
@@ -1804,6 +1796,11 @@ fi
 
 
 %changelog
+* Thu Jun 23 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.8-1.ius
+- Latest upstream
+- remove opcache version checking as it now matches the PHP version
+  inspired from https://github.com/remicollet/remirepo/commit/1d55dcaaaacb213502a550c616767fef69663913#diff-7911ea063f49cbc86e36014b954876ef
+
 * Tue May 31 2016 Carl George <carl.george@rackspace.com> - 7.0.7-2.ius
 - Force daemonize in init script
 
