@@ -83,7 +83,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.8
+Version: 7.0.9
 Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -136,6 +136,7 @@ Patch46: php-5.6.3-fixheader.patch
 Patch47: php-5.6.3-phpinfo.patch
 
 # Upstream fixes (100+)
+Patch100: bug72564.patch
 
 # Security fixes (200+)
 
@@ -502,6 +503,7 @@ Provides: php-pdo_mysql, php-pdo_mysql%{?_isa}
 Provides: %{name}-pdo_mysql, %{name}-pdo_mysql%{?_isa}
 Provides: php-mysqlnd = %{version}-%{release}
 Provides: php-mysqlnd%{?_isa} = %{version}-%{release}
+Conflicts: php-mysql < %{base_ver}
 Conflicts: php-mysqlnd < %{base_ver}
 
 %description mysqlnd
@@ -1444,6 +1446,8 @@ install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/mod_php
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/mod_php/session
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/mod_php/wsdlcache
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/mod_php/opcache
+install -m 755 -d $RPM_BUILD_ROOT%{_docdir}/pecl
+install -m 755 -d $RPM_BUILD_ROOT%{_datadir}/tests/pecl
 
 # PHP-FPM stuff
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/fpm
@@ -1675,6 +1679,9 @@ fi
 %endif
 %dir %{_sharedstatedir}/php
 %dir %{_datadir}/php
+%dir %{_docdir}/pecl
+%dir %{_datadir}/tests
+%dir %{_datadir}/tests/pecl
 
 %files cli
 %{_bindir}/php
@@ -1796,6 +1803,18 @@ fi
 
 
 %changelog
+* Thu Jul 21 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.9-1.ius
+- Latest upstream
+- Ensure -mysqlnd conflicts with stock -mysql subpackage
+- Update Source6 from Fedora:
+  http://pkgs.fedoraproject.org/cgit/rpms/php.git/commit/?id=909cfe1834c4f5324567bfa646c23f87229307ff
+- own tests/doc directories for pecl packages #1351345 from Fedora:
+  http://pkgs.fedoraproject.org/cgit/rpms/php.git/commit/?id=2edfc0d81ae74d5d03e54dafaca645bf5a0e159d
+- wddx: add upstream patch for https://bugs.php.net/72564 from Fedora:
+  http://pkgs.fedoraproject.org/cgit/rpms/php.git/commit/?id=9ded9771764b9ca5b9a538c63a3138a7d4aca467
+
+
+
 * Thu Jun 23 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.8-1.ius
 - Latest upstream
 - remove opcache version checking as it now matches the PHP version
