@@ -84,7 +84,7 @@
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
 Version: 7.0.9
-Release: 1.ius%{?dist}
+Release: 2.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -1731,7 +1731,7 @@ fi
 %endif
 %{_sbindir}/php-fpm
 %dir %{_sysconfdir}/php-fpm.d
-%attr(770,php-fpm,php-fpm) %dir %{_localstatedir}/log/php-fpm
+%attr(750,php-fpm,php-fpm) %dir %{_localstatedir}/log/php-fpm
 %{_mandir}/man8/php-fpm.8*
 %dir %{_datadir}/fpm
 %{_datadir}/fpm/status.html
@@ -1803,6 +1803,9 @@ fi
 
 
 %changelog
+* Tue Aug 16 2016 Carl George <carl.george@rackspace.com> - 7.0.9-2.ius
+- Keep logrotate happy by removing group write permission from /var/log/php-fpm
+
 * Thu Jul 21 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.9-1.ius
 - Latest upstream
 - Ensure -mysqlnd conflicts with stock -mysql subpackage
