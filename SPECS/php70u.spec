@@ -83,8 +83,8 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
-Version: 7.0.9
-Release: 2.ius%{?dist}
+Version: 7.0.10
+Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -136,7 +136,6 @@ Patch46: php-5.6.3-fixheader.patch
 Patch47: php-5.6.3-phpinfo.patch
 
 # Upstream fixes (100+)
-Patch100: bug72564.patch
 
 # Security fixes (200+)
 
@@ -1803,6 +1802,9 @@ fi
 
 
 %changelog
+* Fri Aug 19 2016 Carl George <carl.george@rackspace.com> - 7.0.10-1.ius
+- Latest upstream
+
 * Tue Aug 16 2016 Carl George <carl.george@rackspace.com> - 7.0.9-2.ius
 - Keep logrotate happy by removing group write permission from /var/log/php-fpm
 
@@ -1815,8 +1817,6 @@ fi
   http://pkgs.fedoraproject.org/cgit/rpms/php.git/commit/?id=2edfc0d81ae74d5d03e54dafaca645bf5a0e159d
 - wddx: add upstream patch for https://bugs.php.net/72564 from Fedora:
   http://pkgs.fedoraproject.org/cgit/rpms/php.git/commit/?id=9ded9771764b9ca5b9a538c63a3138a7d4aca467
-
-
 
 * Thu Jun 23 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.8-1.ius
 - Latest upstream
