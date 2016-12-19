@@ -1447,8 +1447,6 @@ install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/mod_php
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/mod_php/session
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/mod_php/wsdlcache
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/mod_php/opcache
-install -m 755 -d $RPM_BUILD_ROOT%{_docdir}/pecl
-install -m 755 -d $RPM_BUILD_ROOT%{_datadir}/tests/pecl
 
 # PHP-FPM stuff
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/fpm
@@ -1680,9 +1678,6 @@ fi
 %endif
 %dir %{_sharedstatedir}/php
 %dir %{_datadir}/php
-%dir %{_docdir}/pecl
-%dir %{_datadir}/tests
-%dir %{_datadir}/tests/pecl
 
 %files cli
 %{_bindir}/php
@@ -1807,6 +1802,7 @@ fi
 * Mon Dec 19 2016 Carl George <carl.george@rackspace.com> - 7.0.14-2.ius
 - Use bundled PCRE on RHEL
 - Use correct macros directory via %%rpmmacrodir (from epel-rpm-macros)
+- Revert 'drop runtime dependency on PEAR' (file triggers) changes
 
 * Fri Dec 09 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.14-1.ius
 - Latest upstream
