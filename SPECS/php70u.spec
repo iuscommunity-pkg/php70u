@@ -35,11 +35,9 @@
 
 %if 0%{?rhel} >= 7
 %global with_systemd 1
-%global with_libpcre 1
 %global _macrosdir %{_rpmconfigdir}/macros.d
 %else
 %global with_systemd 0
-%global with_libpcre 0
 %global _macrosdir %{_sysconfdir}/rpm
 %endif
 
@@ -71,6 +69,12 @@
 %global  with_libgd 0
 %endif
 
+%if 0%{?fedora} >= 22
+%global with_libpcre 1
+%else
+%global with_libpcre 0
+%endif
+
 %global with_zip     1
 %global with_libzip  0
 
@@ -84,7 +88,7 @@
 Summary: PHP scripting language for creating dynamic web sites
 Name: php%{?ius_suffix}
 Version: 7.0.14
-Release: 1.ius%{?dist}
+Release: 2.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -150,7 +154,7 @@ BuildRequires: libstdc++-devel, openssl-devel
 BuildRequires: sqlite-devel >= 3.6.0
 BuildRequires: zlib-devel, smtpdaemon, libedit-devel
 %if %{with_libpcre}
-BuildRequires: pcre-devel >= 6.6
+BuildRequires: pcre-devel >= 8.38
 %endif
 BuildRequires: bzip2, perl, libtool >= 1.4.3, gcc-c++
 BuildRequires: libtool-ltdl-devel
@@ -1802,6 +1806,9 @@ fi
 
 
 %changelog
+* Mon Dec 19 2016 Carl George <carl.george@rackspace.com> - 7.0.14-2.ius
+- Use bundled PCRE on RHEL
+
 * Fri Dec 09 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.14-1.ius
 - Latest upstream
 
