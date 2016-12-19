@@ -1619,16 +1619,18 @@ exit 0
 %if %{with_systemd}
 %systemd_post php-fpm.service
 %else
-chkconfig --add php-fpm
+if [ $1 -eq 1 ]; then
+    chkconfig --add php-fpm &> /dev/null || :
+fi
 %endif
 
 %preun fpm
 %if %{with_systemd}
 %systemd_preun php-fpm.service
 %else
-if [ "$1" -eq 0 ]; then
-service php-fpm stop &> /dev/null
-chkconfig --del php-fpm
+if [ $1 -eq 0 ]; then
+    service php-fpm stop &> /dev/null || :
+    chkconfig --del php-fpm &> /dev/null || :
 fi
 %endif
 
@@ -1636,8 +1638,8 @@ fi
 %if %{with_systemd}
 %systemd_postun_with_restart php-fpm.service
 %else
-if [ "$1" -ge 1 ]; then
-service php-fpm condrestart &> /dev/null || :
+if [ $1 -ge 1 ]; then
+    service php-fpm condrestart &> /dev/null || :
 fi
 %endif
 
@@ -1803,6 +1805,7 @@ fi
 - Use bundled PCRE on RHEL
 - Use correct macros directory via %%rpmmacrodir (from epel-rpm-macros)
 - Revert 'drop runtime dependency on PEAR' (file triggers) changes
+- Clean up scriptlets
 
 * Fri Dec 09 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.14-1.ius
 - Latest upstream
