@@ -35,10 +35,8 @@
 
 %if 0%{?rhel} >= 7
 %global with_systemd 1
-%global _macrosdir %{_rpmconfigdir}/macros.d
 %else
 %global with_systemd 0
-%global _macrosdir %{_sysconfdir}/rpm
 %endif
 
 # Build ZTS extension or only NTS
@@ -1599,7 +1597,7 @@ sed -e "s/@PHP_APIVER@/%{apiver}%{isasuffix}/" \
 %endif
     < %{SOURCE3} > macros.php
 install -m 644 -D macros.php \
-           $RPM_BUILD_ROOT%{_macrosdir}/macros.php
+           $RPM_BUILD_ROOT%{rpmmacrodir}/macros.php
 
 # Remove unpackaged files
 rm -rf $RPM_BUILD_ROOT%{_libdir}/php/modules/*.a \
@@ -1759,7 +1757,7 @@ fi
 %{_mandir}/man1/zts-phpize.1*
 %endif
 %{_mandir}/man1/php-config.1*
-%{_macrosdir}/macros.php
+%{rpmmacrodir}/macros.php
 
 %files embedded
 %{_libdir}/libphp7.so
@@ -1808,6 +1806,7 @@ fi
 %changelog
 * Mon Dec 19 2016 Carl George <carl.george@rackspace.com> - 7.0.14-2.ius
 - Use bundled PCRE on RHEL
+- Use correct macros directory via %%rpmmacrodir (from epel-rpm-macros)
 
 * Fri Dec 09 2016 Ben Harper <ben.harper@rackspace.com> - 7.0.14-1.ius
 - Latest upstream
