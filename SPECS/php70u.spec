@@ -83,7 +83,7 @@
 Summary: PHP scripting language for creating dynamic web sites
 Name: php70u
 Version: 7.0.14
-Release: 2.ius%{?dist}
+Release: 3.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -114,9 +114,6 @@ Patch5: php-5.6.3-includedir.patch
 Patch6: php-5.6.3-embed.patch
 Patch7: php-5.3.0-recode.patch
 Patch8: php-7.0.2-libdb.patch
-# This patch is from Remi Collet
-# https://github.com/remicollet/remirepo/blob/87954ef9ca41c15043c7c892149f22c6a437d190/php/php70/php-7.0.7-curl.patch
-Patch9: php-7.0.7-curl.patch
 
 # Functional changes
 Patch40: php-7.0.0-dlopen.patch
@@ -129,6 +126,7 @@ Patch45: php-5.6.3-ldap_r.patch
 Patch46: php-5.6.3-fixheader.patch
 # drop "Configure command" from phpinfo output
 Patch47: php-5.6.3-phpinfo.patch
+Patch49: php-7.0.14-curltls.patch
 
 # Upstream fixes (100+)
 
@@ -942,6 +940,9 @@ httpd -V  | grep -q 'threaded:.*yes' && exit 1
 %endif
 %patch46 -p1 -b .fixheader
 %patch47 -p1 -b .phpinfo
+%if 0%{?rhel}
+%patch49 -p1 -b .curltls
+%endif
 
 # upstream patches
 
@@ -1785,6 +1786,9 @@ fi
 
 
 %changelog
+* Fri Dec 23 2016 Carl George <carl.george@rackspace.com> - 7.0.14-3.ius
+- Add patch49 to enable TLS 1.1/1.2 support
+
 * Mon Dec 19 2016 Carl George <carl.george@rackspace.com> - 7.0.14-2.ius
 - Use bundled PCRE on RHEL
 - Use correct macros directory via %%rpmmacrodir (from epel-rpm-macros)
