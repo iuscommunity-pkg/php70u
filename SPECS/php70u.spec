@@ -82,7 +82,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php70u
-Version: 7.0.16
+Version: 7.0.17
 Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -116,7 +116,7 @@ Patch7: php-5.3.0-recode.patch
 Patch8: php-7.0.2-libdb.patch
 
 # Functional changes
-Patch40: php-7.0.0-dlopen.patch
+Patch40: php-7.0.17-dlopen.patch
 Patch42: php-7.0.0-systzdata-v13.patch
 # See http://bugs.php.net/53436
 Patch43: php-5.4.0-phpize.patch
@@ -1786,6 +1786,10 @@ fi
 
 
 %changelog
+* Wed Mar 15 2017 Carl George <carl.george@rackspace.com> - 7.0.17-1.ius
+- Latest upstream
+- Rebase patch40
+
 * Thu Feb 16 2017 Ben Harper <ben.harper@rackspace.com> - 7.0.16-1.ius
 - Latest upstream
 
