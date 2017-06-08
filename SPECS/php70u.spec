@@ -82,7 +82,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php70u
-Version: 7.0.19
+Version: 7.0.20
 Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -133,6 +133,7 @@ Patch49: php-7.0.14-curltls.patch
 # Upstream fixes (100+)
 
 # Security fixes (200+)
+Patch200: php-onigurama.patch
 
 # Fixes for tests (300+)
 # Factory is droped from system tzdata
@@ -940,6 +941,7 @@ httpd -V  | grep -q 'threaded:.*yes' && exit 1
 # upstream patches
 
 # security patches
+%patch200 -p1 -b .onig
 
 # Fixes for tests
 %patch300 -p1 -b .datetests
@@ -1781,6 +1783,11 @@ fi
 
 
 %changelog
+* Thu Jun 08 2017 Ben Harper <ben.harper@rackspace.com> - 7.0.20.-1.ius
+- Latest upstream
+- add Patch200 from Fedora:
+  http://pkgs.fedoraproject.org/cgit/rpms/php.git/commit/?h=f25&id=6037a5fb8c8425309f2e3eaabbf05afef2fb2ef6
+
 * Thu May 11 2017 Ben Harper <ben.harper@rackspace.com> - 7.0.19-1.ius
 - Latest upstream
 
