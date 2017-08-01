@@ -83,7 +83,7 @@
 Summary: PHP scripting language for creating dynamic web sites
 Name: php70u
 Version: 7.0.21
-Release: 1.ius%{?dist}
+Release: 2.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -1781,6 +1781,9 @@ fi
 
 
 %changelog
+* Tue Aug 01 2017 Carl George <carl@george.computer> - 7.0.21-2.ius
+- Disable pcre.jit everywhere as it raise AVC #1398474 (Fedora)
+
 * Thu Jul 06 2017 Ben Harper <ben.harper@rackspace.com> - 7.0.21-1.ius
 - Latest upstream
 - remove Patch200, patched upstream
