@@ -82,8 +82,8 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php70u
-Version: 7.0.22
-Release: 2.ius%{?dist}
+Version: 7.0.23
+Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
@@ -116,7 +116,6 @@ Patch5: php-5.6.3-includedir.patch
 Patch6: php-5.6.3-embed.patch
 Patch7: php-5.3.0-recode.patch
 Patch8: php-7.0.2-libdb.patch
-Patch10: php-sqlite3.patch
 
 # Functional changes
 Patch40: php-7.0.17-dlopen.patch
@@ -132,6 +131,7 @@ Patch47: php-5.6.3-phpinfo.patch
 Patch49: php-7.0.14-curltls.patch
 
 # Upstream fixes (100+)
+Patch100: php-upstream.patch
 
 # Security fixes (200+)
 
@@ -925,7 +925,6 @@ httpd -V  | grep -q 'threaded:.*yes' && exit 1
 %patch6 -p1 -b .embed
 %patch7 -p1 -b .recode
 %patch8 -p1 -b .libdb
-%patch10 -p1 -b .errstr
 
 %patch40 -p1 -b .dlopen
 %patch42 -p1 -b .systzdata
@@ -940,6 +939,7 @@ httpd -V  | grep -q 'threaded:.*yes' && exit 1
 %endif
 
 # upstream patches
+%patch100 -p1 -b .up
 
 # security patches
 
@@ -1783,6 +1783,12 @@ fi
 
 
 %changelog
+* Thu Aug 31 2017 Ben Harper <ben.harper@rackspace.com> - 7.0.23-1.ius
+- Latest upstream
+- remove php-sqlite3.patch
+- add php-upstream.patch to correct undefined symbol from:
+  https://git.remirepo.net/cgit/rpms/scl-php71/php.git/commit/?id=0fd0943e1c752bafc7ca85c6009bbccc2a30697a
+
 * Mon Aug 07 2017 Ben Harper <ben.harper@rackspace.com> - 7.0.22-2.ius
 - add php-sqlite3.patch to correct undefined symbol from:
   https://git.remirepo.net/cgit/rpms/scl-php71/php.git/commit/?id=6272b285455841ae1b684610d31f6341c7f7731d
