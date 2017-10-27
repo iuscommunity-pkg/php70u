@@ -88,7 +88,7 @@ Release: 1.ius%{?dist}
 # Zend is licensed under Zend
 # TSRM is licensed under BSD
 # main/snprintf.c, main/spprintf.c and main/rfc1867.c are ASL 1.0
-#  ext/date/lib is MIT
+# ext/date/lib is MIT
 License: PHP and Zend and BSD and MIT and ASL 1.0
 Group: Development/Languages
 URL: http://www.php.net/
@@ -176,9 +176,6 @@ Summary: PHP module for the Apache HTTP Server
 BuildRequires: httpd-devel < 2.4.10
 Requires: httpd-mmn = %{_httpd_mmn}
 Requires: php-common%{?_isa} = %{version}-%{release}
-# for user experience
-Provides: %{name} = %{version}-%{release}
-Provides: %{name}%{?_isa} = %{version}-%{release}
 %if %{with_zts}
 Provides: php-zts = %{version}-%{release}
 Provides: php-zts%{?_isa} = %{version}-%{release}
@@ -190,6 +187,8 @@ Provides: %{name}-zts%{?_isa} = %{version}-%{release}
 Provides: php(httpd)
 Provides: %{name}(httpd)
 
+Provides: %{name} = %{version}-%{release}
+Provides: %{name}%{?_isa} = %{version}-%{release}
 Provides: php = %{version}-%{release}
 Provides: php%{?_isa} = %{version}-%{release}
 Conflicts: php < %{version}
@@ -198,8 +197,8 @@ Provides: mod_php%{?_isa} = %{version}-%{release}
 Conflicts: mod_php < %{version}
 
 %description -n mod_%{name}
-The mod_php package contains the module which adds support for the PHP
-language to Apache HTTP Server.
+The mod_php package contains the module which adds support for the PHP language
+to Apache HTTP Server.
 
 %package cli
 Group: Development/Languages
@@ -239,12 +238,8 @@ BuildRequires: libacl-devel
 Requires: php-common%{?_isa} = %{version}-%{release}
 Requires(pre): /usr/sbin/useradd
 %if %{with_systemd}
-BuildRequires: systemd-units
 BuildRequires: systemd-devel
-Requires: systemd-units
-Requires(post): systemd-units
-Requires(preun): systemd-units
-Requires(postun): systemd-units
+%{?systemd_requires}
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
@@ -267,7 +262,7 @@ any size, especially busier sites.
 Group: Development/Languages
 Summary: Nginx configuration for PHP-FPM
 BuildArch: noarch
-Requires: php-fpm = %{version}-%{release}
+Requires: %{name}-fpm = %{version}-%{release}
 Requires: nginx
 Provides: php-fpm-nginx = %{version}-%{release}
 Conflicts: php-fpm-nginx < %{version}
@@ -279,7 +274,7 @@ Nginx configuration files for the PHP FastCGI Process Manager.
 Group: Development/Languages
 Summary: Apache HTTP Server configuration for PHP-FPM
 BuildArch: noarch
-Requires: php-fpm = %{version}-%{release}
+Requires: %{name}-fpm = %{version}-%{release}
 Requires: httpd >= 2.4
 Provides: php-fpm-httpd = %{version}-%{release}
 Conflicts: php-fpm-httpd < %{version}
@@ -986,14 +981,14 @@ if test "x${pver}" != "x%{version}"; then
    exit 1
 fi
 
-vapi=`sed -n '/#define PHP_API_VERSION/{s/.* //;p}' main/php.h`
+vapi=$(sed -n '/#define PHP_API_VERSION/{s/.* //;p}' main/php.h)
 if test "x${vapi}" != "x%{apiver}"; then
    : Error: Upstream API version is now ${vapi}, expecting %{apiver}.
    : Update the apiver macro and rebuild.
    exit 1
 fi
 
-vzend=`sed -n '/#define ZEND_MODULE_API_NO/{s/^[^0-9]*//;p;}' Zend/zend_modules.h`
+vzend=$(sed -n '/#define ZEND_MODULE_API_NO/{s/^[^0-9]*//;p;}' Zend/zend_modules.h)
 if test "x${vzend}" != "x%{zendver}"; then
    : Error: Upstream Zend ABI version is now ${vzend}, expecting %{zendver}.
    : Update the zendver macro and rebuild.
@@ -1001,7 +996,7 @@ if test "x${vzend}" != "x%{zendver}"; then
 fi
 
 # Safety check for PDO ABI version change
-vpdo=`sed -n '/#define PDO_DRIVER_API/{s/.*[ 	]//;p}' ext/pdo/php_pdo_driver.h`
+vpdo=$(sed -n '/#define PDO_DRIVER_API/{s/.*[ 	]//;p}' ext/pdo/php_pdo_driver.h)
 if test "x${vpdo}" != "x%{pdover}"; then
    : Error: Upstream PDO ABI version is now ${vpdo}, expecting %{pdover}.
    : Update the pdover macro and rebuild.
@@ -1042,11 +1037,11 @@ cp %{SOURCE50} 10-opcache.ini
 
 %build
 # aclocal workaround - to be improved
-cat `aclocal --print-ac-dir`/{libtool,ltoptions,ltsugar,ltversion,lt~obsolete}.m4 >>aclocal.m4
+cat $(aclocal --print-ac-dir)/{libtool,ltoptions,ltsugar,ltversion,lt~obsolete}.m4 >>aclocal.m4
 
 # Force use of system libtool:
 libtoolize --force --copy
-cat `aclocal --print-ac-dir`/{libtool,ltoptions,ltsugar,ltversion,lt~obsolete}.m4 >build/libtool.m4
+cat $(aclocal --print-ac-dir)/{libtool,ltoptions,ltsugar,ltversion,lt~obsolete}.m4 >build/libtool.m4
 
 # Regenerate configure scripts (patches change config.m4's)
 touch configure.in
@@ -1395,7 +1390,7 @@ install -m 755 -d $RPM_BUILD_ROOT%{_datadir}/php
 
 # install the DSO
 install -m 755 -d $RPM_BUILD_ROOT%{_httpd_moddir}
-install -m 755 build-apache/libs/libphp7.so $RPM_BUILD_ROOT%{_httpd_moddir}/libphp7.so
+install -m 755 build-apache/libs/libphp7.so $RPM_BUILD_ROOT%{_httpd_moddir}
 
 %if %{with_zts}
 # install the ZTS DSO
@@ -1468,10 +1463,12 @@ sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_sysconfdir}/logrotat
 %endif
 # Nginx configuration
 install -D -m 644 %{SOURCE13} $RPM_BUILD_ROOT%{_sysconfdir}/nginx/conf.d/php-fpm.conf
+%if ! %{with_systemd}
+sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_sysconfdir}/nginx/conf.d/php-fpm.conf
+%endif
 # Apache httpd configuration
 install -D -m 644 %{SOURCE15} $RPM_BUILD_ROOT%{_httpd_confdir}/php-fpm.conf
 %if ! %{with_systemd}
-sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_sysconfdir}/nginx/conf.d/php-fpm.conf
 sed -i -e 's:/run:%{_localstatedir}/run:' $RPM_BUILD_ROOT%{_httpd_confdir}/php-fpm.conf
 %endif
 install -D -m 644 %{SOURCE14} $RPM_BUILD_ROOT%{_sysconfdir}/nginx/default.d/php.conf
@@ -1520,11 +1517,11 @@ EOF
 %endif
     fi
     cat > files.${mod} <<EOF
-%attr(755,root,root) %{_libdir}/php/modules/${mod}.so
-%config(noreplace) %attr(644,root,root) %{_sysconfdir}/php.d/${ini}
+%{_libdir}/php/modules/${mod}.so
+%config(noreplace) %{_sysconfdir}/php.d/${ini}
 %if %{with_zts}
-%attr(755,root,root) %{_libdir}/php-zts/modules/${mod}.so
-%config(noreplace) %attr(644,root,root) %{_sysconfdir}/php-zts.d/${ini}
+%{_libdir}/php-zts/modules/${mod}.so
+%config(noreplace) %{_sysconfdir}/php-zts.d/${ini}
 %endif
 EOF
 done
@@ -1589,11 +1586,10 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/php/modules/*.a \
 rm -f README.{Zeus,QNX,CVS-RULES}
 
 %pre fpm
-getent group php-fpm >/dev/null || \
-  groupadd -r php-fpm
+getent group php-fpm >/dev/null || groupadd -r php-fpm
 getent passwd php-fpm >/dev/null || \
-  useradd -r -g php-fpm -s /sbin/nologin \
-    -d %{_sharedstatedir}/php/fpm -c "php-fpm" php-fpm
+    useradd -r -g php-fpm -d %{_sharedstatedir}/php/fpm \
+    -s /sbin/nologin -c "php-fpm" php-fpm
 exit 0
 
 %post fpm
@@ -1680,8 +1676,8 @@ fi
 %doc sapi/cgi/README* sapi/cli/README
 
 %files dbg
-%{_bindir}/phpdbg
 %doc sapi/phpdbg/{README.md,CREDITS}
+%{_bindir}/phpdbg
 %{_mandir}/man1/phpdbg.1*
 %if %{with_zts}
 %{_bindir}/zts-phpdbg
