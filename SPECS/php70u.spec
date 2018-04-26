@@ -82,7 +82,7 @@
 
 Summary: PHP scripting language for creating dynamic web sites
 Name: php70u
-Version: 7.0.29
+Version: 7.0.30
 Release: 1.ius%{?dist}
 # All files licensed under PHP version 3.01, except
 # Zend is licensed under Zend
@@ -1777,6 +1777,9 @@ fi
 
 
 %changelog
+* Thu Apr 26 2018 Carl George <carl@george.computer> - 7.0.30-1.ius
+- Latest upstream
+
 * Fri Mar 30 2018 Carl George <carl@george.computer> - 7.0.29-1.ius
 - Latest upstream
 
