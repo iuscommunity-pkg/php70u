@@ -1430,7 +1430,7 @@ install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/fpm/session
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/fpm/wsdlcache
 install -m 700 -d $RPM_BUILD_ROOT%{_sharedstatedir}/php/fpm/opcache
 # Log
-install -m 755 -d $RPM_BUILD_ROOT%{_localstatedir}/log/php-fpm
+install -m 750 -d $RPM_BUILD_ROOT%{_localstatedir}/log/php-fpm
 # Config
 install -m 755 -d $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.d
 install -m 644 %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/php-fpm.conf
